@@ -1,0 +1,11 @@
+<resources>
+    <string name="app_name">One World</string>
+    <string name="no_internet">No internet</string>
+    <string name="path_images">/Downloads/</string>
+
+    <string name="data_URL">https://restcountries.eu/rest/v2/all</string>
+    <string name="img.search">Search</string>
+    <string name="hint.search">Search Country Name</string>
+    <string name="country.Image">Flag</string>
+
+</resources>

@@ -1,14 +1,8 @@
 package com.world.one.oneworld.model;
 
-import android.net.Uri;
-
 import com.bluelinelabs.logansquare.annotation.JsonObject;
 
 import java.io.Serializable;
-
-/**
- * Created by sunme on 21-11-2017.
- */
 
 @JsonObject(fieldDetectionPolicy = JsonObject.FieldDetectionPolicy.NONPRIVATE_FIELDS_AND_ACCESSORS)
 public class Currency implements Serializable {

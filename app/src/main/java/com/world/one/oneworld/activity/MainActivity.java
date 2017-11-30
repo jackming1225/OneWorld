@@ -51,6 +51,7 @@ public class MainActivity extends BaseActivityV2<Void, MainActivityView, MainAct
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+        setToolbar(getString(R.string.app_name));
         iniViews();
 
     }
@@ -82,7 +83,7 @@ public class MainActivity extends BaseActivityV2<Void, MainActivityView, MainAct
         @Override
         protected void onPostExecute(Void aVoid) {
             super.onPostExecute(aVoid);
-            initRecycler();
+            initRecycler(countryList);
         }
     }
 
@@ -105,7 +106,7 @@ public class MainActivity extends BaseActivityV2<Void, MainActivityView, MainAct
         return countryList;
     }
 
-    private void initRecycler() {
+    private void initRecycler(final List<Country> countryList) {
         rvCountryList.setHasFixedSize(true);
         RecyclerView.LayoutManager layoutManager = new GridLayoutManager(this, 2, GridLayoutManager.VERTICAL, false);
         rvCountryList.setLayoutManager(layoutManager);

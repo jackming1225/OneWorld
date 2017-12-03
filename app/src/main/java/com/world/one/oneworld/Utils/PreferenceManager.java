@@ -12,6 +12,7 @@ public class PreferenceManager {
 
     private static final String preferenceStore = "one_World";
     public static final String KEY_SERVER_DATA = "CountryList";
+    public static final String KEY_LAST_SYNCED_TIMESTAMP = "lastSyncedTime";
 
 
     public static void savePreferences(Context context, String preferenceName, @Nullable Bundle bundle) {

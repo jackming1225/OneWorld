@@ -58,7 +58,7 @@ public class CountryAdapter extends RecyclerView.Adapter<CountryAdapter.CountryD
                     .sourceEncoder(new StreamEncoder())
                     .cacheDecoder(new FileToStreamDecoder<SVG>(new SvgDecoder()))
                     .decoder(new SvgDecoder())
-                    .placeholder(R.drawable.ic_search)
+                    .placeholder(R.drawable.iv_default_image)
                     .error(R.drawable.iv_default_image)
                     .animate(android.R.anim.fade_in)
                     .listener(new SvgSoftwareLayerSetter<Uri>());

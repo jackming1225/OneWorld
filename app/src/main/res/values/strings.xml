@@ -8,5 +8,6 @@
     <string name="hint.search">Search Country Name</string>
     <string name="country.Image">Flag</string>
     <string name="google_maps_key">AIzaSyAuUm5NWx9_DguB2SVvmLFTcAAS0ART0Uo</string>
+    <string name="menu.refresh">Refresh</string>
 
 </resources>

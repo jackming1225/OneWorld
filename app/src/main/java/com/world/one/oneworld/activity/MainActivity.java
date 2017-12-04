@@ -4,14 +4,19 @@ import android.database.SQLException;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
-import android.support.v7.widget.GridLayoutManager;
+import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.text.Editable;
 import android.text.TextWatcher;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
+import android.widget.ProgressBar;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.bluelinelabs.logansquare.LoganSquare;
 import com.world.one.oneworld.R;
@@ -37,6 +42,7 @@ public class MainActivity extends BaseActivityV2<Void, MainActivityView, MainAct
     private CountryAdapter countryAdapter;
     private TextView tvNoData;
     private EditText etSearchCountryName;
+    private ProgressBar pbLoading;
     private ImageView ivSearchButton;
 
     @NonNull
@@ -61,13 +67,34 @@ public class MainActivity extends BaseActivityV2<Void, MainActivityView, MainAct
 
     private void iniViews() {
         restServiceV2 = new RestServiceV2(this);
+        pbLoading = findViewById(R.id.pbLoading);
         countryList = new ArrayList<>();
         rvCountryList = findViewById(R.id.rvCountryList);
         tvNoData = findViewById(R.id.tvNoData);
         ivSearchButton = findViewById(R.id.ivSearchButton);
         etSearchCountryName = findViewById(R.id.etSearchCountryName);
+        etSearchCountryName.clearFocus();
         offlineCheck();
         searchByString();
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        getMenuInflater().inflate(R.menu.menu, menu);
+        return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        int refreshButton = item.getItemId();
+        if (refreshButton == R.id.menuRefresh) {
+            if (restServiceV2.isOnline()) {
+                new DataTask().execute();
+            } else {
+                Toast.makeText(this, R.string.no_internet, Toast.LENGTH_SHORT).show();
+            }
+        }
+        return super.onOptionsItemSelected(item);
     }
 
     private void searchByString() {
@@ -103,7 +130,7 @@ public class MainActivity extends BaseActivityV2<Void, MainActivityView, MainAct
             long savedTimeStamp = bundle.getLong(PreferenceManager.KEY_LAST_SYNCED_TIMESTAMP);
             long currentTimeStamp = DateUtils.getCurrentUnixTimeStampWithTime();
             long cachedTime = DateUtils.getDifferenceInMinutes(savedTimeStamp, currentTimeStamp);
-            if (cachedTime > timeWhenToSync) {
+            if (cachedTime > timeWhenToSync && restServiceV2.isOnline()) {
                 new DataTask().execute();
             } else {
                 recyclerViewCreateFromBundle(bundle);
@@ -137,8 +164,9 @@ public class MainActivity extends BaseActivityV2<Void, MainActivityView, MainAct
     }
 
     private void initRecycler(final List<Country> countryList) {
+        pbLoading.setVisibility(View.GONE);
         rvCountryList.setHasFixedSize(true);
-        RecyclerView.LayoutManager layoutManager = new GridLayoutManager(this, 2, GridLayoutManager.VERTICAL, false);
+        RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(this, LinearLayout.VERTICAL, false);
         rvCountryList.setLayoutManager(layoutManager);
 
         if (!countryList.isEmpty()) {
@@ -166,6 +194,13 @@ public class MainActivity extends BaseActivityV2<Void, MainActivityView, MainAct
     }
 
     private class DataTask extends AsyncTask<Void, Void, Void> {
+
+        @Override
+        protected void onPreExecute() {
+            super.onPreExecute();
+            pbLoading.setVisibility(View.VISIBLE);
+            rvCountryList.setVisibility(View.GONE);
+        }
 
         @Override
         protected Void doInBackground(Void... voids) {

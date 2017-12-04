@@ -51,6 +51,7 @@ public class CountryDetailsActivity extends BaseActivityV2<Void, CountryDetailsA
         Bundle bundle = getIntent().getExtras();
         if (bundle != null && !bundle.isEmpty()) {
             country = (Country) bundle.getSerializable("country");
+            setToolbar(country.getName() + "/" + country.getNativeName());
         }
     }
 

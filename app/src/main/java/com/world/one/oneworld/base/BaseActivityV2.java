@@ -14,9 +14,6 @@ import com.world.one.oneworld.mvp.MVPViewDelegate;
 import com.world.one.oneworld.mvp.ParcelableAndSerializablePresentationModelSerializer;
 import com.world.one.oneworld.mvp.PresentationModelSerializer;
 
-import java.util.ArrayList;
-import java.util.List;
-
 public abstract class BaseActivityV2<M, V extends IMVPView, P extends IPresenter<V, M>>
         extends BaseAppCompatActivity implements IMVPView {
 
